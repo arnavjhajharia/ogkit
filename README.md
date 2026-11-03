@@ -1,6 +1,8 @@
 # ogkit — free OG / social-card image generator
 
 **Live:** https://arnavjhajharia.github.io/ogkit/
+
+**40-second demo video:** https://youtu.be/S0oJ8sxs1-M
 **What:** A 100% client-side tool that makes perfect 1200×630 Open Graph / social-share images in the browser.
 No sign-up, no server, nothing uploaded (text + logo stay local). Single `index.html`, plain `<canvas>`, no build step.
 
