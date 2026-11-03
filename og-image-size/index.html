@@ -17,10 +17,12 @@ code,pre{font-family:Menlo,Consolas,monospace;font-size:14px;background:#161826;
 pre{padding:14px;overflow:auto;border:1px solid var(--line)}.cta{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:10px;margin:8px 0}
 .box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#12131c;margin:22px 0}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:48px;padding-top:16px}
+.verified{font-size:14px;color:var(--muted);margin:0 0 22px;padding:10px 14px;border-left:3px solid var(--acc);background:#12131c}
 </style></head><body><main>
 <p style="margin:0 0 18px;font-size:14px"><a href="https://arnavjhajharia.github.io/ogkit/">&larr; ogkit</a></p>
 <h1>OG image size and tags: why your link preview has no image</h1>
 <p class="lead">Use a <b>1200 × 630</b> PNG or JPEG, reference it with a <b>full https:// URL</b>, add <b>twitter:card = summary_large_image</b>, and re-scrape after every change.</p>
+<p class="verified"><time datetime="2026-11-03">Last verified 3 November 2026</time> against <a href="https://developers.facebook.com/docs/sharing/webmasters/images/">Facebook link preview image guidance</a> and X large-card behaviour. Troubleshooting walkthrough: dev.to post #3 in queue (<code>og-preview-debug.md</code>).</p>
 <h2 id="og-image-size">Rule 1: size 1200 × 630</h2>
 <p>1200 × 630 (a 1.91:1 ratio) is the size Facebook recommends and the one X, LinkedIn, Slack and Discord all display well. Export at 2× (2400 × 1260) if you want it sharp on retina screens, but keep the file small. Keep the title big and centred: some apps crop to a square or show a small thumbnail.</p>
 <h2 id="facebook-og-image-size">Facebook share image size (2026)</h2>
