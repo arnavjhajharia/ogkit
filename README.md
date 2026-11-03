@@ -38,6 +38,10 @@ Keep the ZIP small (WebP, ~20–40 MB) per the gradient-pack critique — big ZI
 Part of an indie "ship kit" with [favikit](https://arnavjhajharia.github.io/favikit/) (favicons) and the
 app-store screenshot tool (appshot). Cross-link all three; bundle the Pro packs later.
 
+## List this project
+
+One-line: **Browser-only Open Graph / social card generator (1200×630, grain, meta-tag copy), no sign-up.** https://arnavjhajharia.github.io/ogkit/ · https://github.com/arnavjhajharia/ogkit
+
 ## Distribution asks (handed to distributor)
 - Gumroad listing copy + cover for the Pro pack.
 - One honest Show-HN / r/webdev / r/SideProject post when there are ≥2 tools to point at.
