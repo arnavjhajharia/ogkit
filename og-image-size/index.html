@@ -1,9 +1,9 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OG image size and meta tags (1200x630): why your link preview has no image</title>
-<meta name="description" content="The og:image size that works everywhere (1200x630), the exact meta tags to copy, and why previews break: relative URLs, a missing twitter:card tag, and cached previews.">
+<title>OG image size in 2026 — 1200×630 meta tags &amp; link preview checklist</title>
+<meta name="description" content="OG image size in 2026: 1200×630, the meta tags to copy, and a link preview test checklist. Fix missing images: absolute og:image URLs, twitter:card, and cached previews.">
 <link rel="canonical" href="https://arnavjhajharia.github.io/ogkit/og-image-size/">
-<meta property="og:title" content="OG image size and meta tags (1200x630): why your link preview has no image"><meta property="og:description" content="The og:image size that works everywhere (1200x630), the exact meta tags to copy, and why previews break: relative URLs, a missing twitter:card tag, and cached previews.">
+<meta property="og:title" content="OG image size in 2026 — 1200×630 meta tags &amp; link preview checklist"><meta property="og:description" content="OG image size in 2026: 1200×630, meta tags, and a link preview test checklist. Fix missing images with absolute og:image URLs and twitter:card.">
 <meta property="og:url" content="https://arnavjhajharia.github.io/ogkit/og-image-size/"><meta property="og:type" content="article">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the best OG image size?", "acceptedAnswer": {"@type": "Answer", "text": "1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack, Discord and Telegram."}}, {"@type": "Question", "name": "Why does my link preview show no image?", "acceptedAnswer": {"@type": "Answer", "text": "The most common causes are a relative og:image URL, an image the crawler can't fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger."}}, {"@type": "Question", "name": "How do I get a large image card on X (Twitter)?", "acceptedAnswer": {"@type": "Answer", "text": "Add <meta name=\"twitter:card\" content=\"summary_large_image\"> alongside your og:image tag."}}, {"@type": "Question", "name": "Do I need separate twitter:image tags?", "acceptedAnswer": {"@type": "Answer", "text": "No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing."}}, {"@type": "Question", "name": "Why does WhatsApp show no thumbnail for my link?", "acceptedAnswer": {"@type": "Answer", "text": "WhatsApp reads Open Graph tags. Use an absolute https:// og:image URL (JPEG or PNG under about 300 KB), keep the image publicly fetchable with no login wall, and wait a few minutes or change the image URL (?v=2) because WhatsApp caches previews aggressively."}}]}</script>
 <style>
@@ -18,11 +18,31 @@ pre{padding:14px;overflow:auto;border:1px solid var(--line)}.cta{display:inline-
 .box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#12131c;margin:22px 0}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:48px;padding-top:16px}
 .verified{font-size:14px;color:var(--muted);margin:0 0 22px;padding:10px 14px;border-left:3px solid var(--acc);background:#12131c}
+.checklist{list-style:none;padding:0;margin:16px 0}.checklist li{margin:10px 0;padding-left:28px;position:relative}
+.checklist li::before{content:"☐";position:absolute;left:0;color:var(--acc);font-weight:700}
 </style></head><body><main>
 <p style="margin:0 0 18px;font-size:14px"><a href="https://arnavjhajharia.github.io/ogkit/">&larr; ogkit</a></p>
-<h1>OG image size and tags: why your link preview has no image</h1>
-<p class="lead">Use a <b>1200 × 630</b> PNG or JPEG, reference it with a <b>full https:// URL</b>, add <b>twitter:card = summary_large_image</b>, and re-scrape after every change.</p>
+<h1>OG image size in 2026</h1>
+<p class="lead">Ship a <b>1200 × 630</b> PNG or JPEG at a <b>full https:// URL</b>, add <code>twitter:card = summary_large_image</code>, and run the checklist below before you share. If previews still break, jump to <a href="#linkedin-og-image">LinkedIn</a>, <a href="#whatsapp-link-preview">WhatsApp</a>, or <a href="#twitter-card-cache-purge">X cache purge</a>.</p>
 <p class="verified"><time datetime="2026-11-03">Last verified 3 November 2026</time> against <a href="https://developers.facebook.com/docs/sharing/webmasters/images/">Facebook link preview image guidance</a> and X large-card behaviour. Troubleshooting walkthrough: dev.to post #3 in queue (<code>og-preview-debug.md</code>).</p>
+<h2>Quick reference (2026)</h2>
+<table><tr><th>Platform</th><th>Recommended size</th><th>Must-have tag</th></tr>
+<tr><td>Facebook, LinkedIn, Slack, Discord</td><td><b>1200 × 630</b> (1.91:1) JPEG/PNG</td><td><code>og:image</code> absolute https URL</td></tr>
+<tr><td>X (Twitter)</td><td>Same image; min ~300×157, max 4096×4096, &lt;5&nbsp;MB</td><td><code>twitter:card</code> = <code>summary_large_image</code></td></tr>
+<tr><td>WhatsApp / Telegram</td><td>1200 × 630; keep file &lt;~300&nbsp;KB when possible</td><td>Public <code>og:image</code> (no login wall)</td></tr>
+<tr><td>iMessage / Apple</td><td>Uses Open Graph when present</td><td>Same <code>og:image</code> block</td></tr></table>
+<h2>Test your link preview before you ship</h2>
+<p>Run once per deploy (use a URL nobody has shared yet, or bump <code>?v=</code> on the image):</p>
+<ul class="checklist">
+<li><code>curl -s https://yoursite.com/page | grep -i og:image</code> — tags must appear in <b>server HTML</b>, not only after JavaScript.</li>
+<li>Open the <code>og:image</code> URL in a private window — expect HTTP 200 and an image content-type (not HTML login).</li>
+<li>Paste the page into <a href="https://developers.facebook.com/tools/debug/">Facebook Sharing Debugger</a> → <b>Scrape Again</b> after every change.</li>
+<li>Confirm <code>twitter:card</code> is <code>summary_large_image</code> — without it, X shows a tiny square.</li>
+<li>Re-test with <code>curl -sI -A "Twitterbot/1.0"</code> if a CDN/WAF might block crawlers.</li>
+<li>After fixes, bump <code>?v=2</code> on the image URL — WhatsApp and Telegram cache aggressively.</li>
+</ul>
+<h2 id="guide-sections">Detailed fixes (by platform)</h2>
+<p style="font-size:15px;color:var(--muted);margin:0 0 24px">Jump to: <a href="#facebook-og-image-size">Facebook</a> · <a href="#linkedin-og-image">LinkedIn</a> · <a href="#twitter-card">X card tag</a> · <a href="#whatsapp-link-preview">WhatsApp</a> · <a href="#telegram-link-preview">Telegram</a> · <a href="#og-image-warnings">Debugger warnings</a></p>
 <h2 id="og-image-size">Rule 1: size 1200 × 630</h2>
 <p>1200 × 630 (a 1.91:1 ratio) is the size Facebook recommends and the one X, LinkedIn, Slack and Discord all display well. Export at 2× (2400 × 1260) if you want it sharp on retina screens, but keep the file small. Keep the title big and centred: some apps crop to a square or show a small thumbnail.</p>
 <h2 id="facebook-og-image-size">Facebook share image size (2026)</h2>
@@ -114,6 +134,9 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <p style="font-size:15px;color:var(--muted);margin:32px 0 0">Related guides: <a href="https://arnavjhajharia.github.io/appshot/screenshot-sizes/#6-5-inch-display">App Store screenshot sizes (6.5&quot; / 2026)</a> ·
 <a href="https://arnavjhajharia.github.io/favikit/favicon-sizes/#force-favicon-refresh">Favicon not updating (cache bust)</a> ·
 <a href="https://arnavjhajharia.github.io/shipcopy/whats-new-from-changelog/">What&apos;s New from a changelog</a></p>
+<p style="font-size:15px;color:var(--muted);margin:12px 0 0">On DEV: <a href="https://dev.to/bharat_ankh_920bf0864220a/app-store-screenshot-sizes-in-2026-which-ones-are-actually-required-24f5">App Store screenshot sizes</a> ·
+<a href="https://dev.to/bharat_ankh_920bf0864220a/favicon-not-updating-after-deploy-5-fixes-for-the-browsers-favicon-cache-34ip">Favicon cache fixes</a> ·
+<a href="https://arnavjhajharia.github.io/ogkit/">ogkit tool</a></p>
 <footer>Part of The Ship Kit, free browser tools for shipping apps and sites: <a href="https://arnavjhajharia.github.io/appshot/">AppShot</a> (store screenshots) ·
 <a href="https://arnavjhajharia.github.io/favikit/">Favikit</a> (favicons) · <a href="https://arnavjhajharia.github.io/ogkit/">ogkit</a> (OG images) ·
 <a href="https://arnavjhajharia.github.io/shipcopy/">ShipCopy</a> (What's New from changelog).
