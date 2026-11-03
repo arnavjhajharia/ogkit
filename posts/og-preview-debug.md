@@ -53,7 +53,7 @@ A `403` or a challenge page here explains a missing preview even when everything
 
 **1200 × 630** (about 1.91:1) is the safe default that every major platform crops well. For X, set `twitter:card` to `summary_large_image`, or you get the small square card. Keep the file small: X rejects images over 5 MB, and smaller files simply load more reliably for every crawler. A tall phone screenshot will be cropped to a strip.
 
-Size and per-platform notes: [OG image size guide](https://arnavjhajharia.github.io/ogkit/og-image-size/).
+Size and per-platform notes: [OG image size guide](https://arnavjhajharia.github.io/ogkit/og-image-size/) (includes a **test your link preview** checklist).
 
 ## 6. The platform cached the old (broken) preview
 
