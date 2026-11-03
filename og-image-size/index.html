@@ -5,7 +5,7 @@
 <link rel="canonical" href="https://arnavjhajharia.github.io/ogkit/og-image-size/">
 <meta property="og:title" content="OG image size and meta tags (1200x630): why your link preview has no image"><meta property="og:description" content="The og:image size that works everywhere (1200x630), the exact meta tags to copy, and why previews break: relative URLs, a missing twitter:card tag, and cached previews.">
 <meta property="og:url" content="https://arnavjhajharia.github.io/ogkit/og-image-size/"><meta property="og:type" content="article">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the best OG image size?", "acceptedAnswer": {"@type": "Answer", "text": "1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack and Discord."}}, {"@type": "Question", "name": "Why does my link preview show no image?", "acceptedAnswer": {"@type": "Answer", "text": "The most common causes are a relative og:image URL, an image the crawler can't fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger."}}, {"@type": "Question", "name": "How do I get a large image card on X (Twitter)?", "acceptedAnswer": {"@type": "Answer", "text": "Add <meta name=\"twitter:card\" content=\"summary_large_image\"> alongside your og:image tag."}}, {"@type": "Question", "name": "Do I need separate twitter:image tags?", "acceptedAnswer": {"@type": "Answer", "text": "No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the best OG image size?", "acceptedAnswer": {"@type": "Answer", "text": "1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack and Discord."}}, {"@type": "Question", "name": "Why does my link preview show no image?", "acceptedAnswer": {"@type": "Answer", "text": "The most common causes are a relative og:image URL, an image the crawler can't fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger."}}, {"@type": "Question", "name": "How do I get a large image card on X (Twitter)?", "acceptedAnswer": {"@type": "Answer", "text": "Add <meta name=\"twitter:card\" content=\"summary_large_image\"> alongside your og:image tag."}}, {"@type": "Question", "name": "Do I need separate twitter:image tags?", "acceptedAnswer": {"@type": "Answer", "text": "No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing."}}, {"@type": "Question", "name": "Why does WhatsApp show no thumbnail for my link?", "acceptedAnswer": {"@type": "Answer", "text": "WhatsApp reads Open Graph tags. Use an absolute https:// og:image URL (JPEG or PNG under about 300 KB), keep the image publicly fetchable with no login wall, and wait a few minutes or change the image URL (?v=2) because WhatsApp caches previews aggressively."}}]}</script>
 <style>
 :root{--bg:#0d0e14;--fg:#e9e9f2;--muted:#9a9ab0;--line:#262838;--acc:#8b7cff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
@@ -23,14 +23,6 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <p class="lead">Use a <b>1200 × 630</b> PNG or JPEG, reference it with a <b>full https:// URL</b>, add <b>twitter:card = summary_large_image</b>, and re-scrape after every change.</p>
 <h2 id="og-image-size">Rule 1: size 1200 × 630</h2>
 <p>1200 × 630 (a 1.91:1 ratio) is the size Facebook recommends and the one X, LinkedIn, Slack and Discord all display well. Export at 2× (2400 × 1260) if you want it sharp on retina screens, but keep the file small. Keep the title big and centred: some apps crop to a square or show a small thumbnail.</p>
-<h2 id="facebook-og-image-size">Facebook share image size (2026)</h2>
-<p>Facebook’s link preview still expects a <b>1200 × 630</b> PNG or JPEG at a public <code>https://</code> URL. Use raster only (not SVG). Stay under ~8&nbsp;MB; aim for &lt;300&nbsp;KB so mobile scrapes finish quickly. After you change the file, open the <a href="https://developers.facebook.com/tools/debug/">Sharing Debugger</a>, paste your page URL, and click <b>Scrape Again</b> — otherwise feeds keep showing the old image for days.</p>
-<h2 id="og-image-warnings">Fixing “og:image” warnings in the Sharing Debugger</h2>
-<p>Warnings usually mean: image smaller than ~600×315 (use 1200×630), a relative <code>og:image</code> path, a 404 or auth wall on the image URL, or a stale cache. Add explicit dimensions so the crawler knows the aspect ratio:</p>
-<pre>&lt;meta property="og:image" content="https://example.com/share.png"&gt;
-&lt;meta property="og:image:width" content="1200"&gt;
-&lt;meta property="og:image:height" content="630"&gt;</pre>
-<p>Re-scrape after every deploy. If the warning persists, curl the image URL from another network — if you can’t fetch it, neither can Facebook.</p>
 <h2>Rule 2: a full https:// URL</h2>
 <pre>&lt;meta property="og:image" content="https://example.com/og.png"&gt;
 &lt;meta property="og:image:width" content="1200"&gt;
@@ -41,6 +33,16 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <p>Without it, X falls back to a small square thumbnail. X reads <code>og:title</code>, <code>og:description</code> and <code>og:image</code> if you don't set separate <code>twitter:</code> tags.</p>
 <h2 id="preview-cache">Rule 4: previews are cached</h2>
 <p>Platforms cache the preview the first time a link is shared. After you change the image, refresh it with <a href="https://www.linkedin.com/post-inspector/">LinkedIn Post Inspector</a> or the <a href="https://developers.facebook.com/tools/debug/">Facebook Sharing Debugger</a>, or add a version query string (<code>og.png?v=2</code>).</p>
+<h2 id="whatsapp-link-preview">WhatsApp link preview thumbnail missing</h2>
+<p>WhatsApp’s crawler uses the same Open Graph tags as Facebook. If a shared URL shows title/URL but <b>no image</b>, check these in order:</p>
+<ol>
+<li><b>Absolute <code>https://</code> <code>og:image</code></b> — relative paths fail silently.</li>
+<li><b>Public fetch</b> — curl the image URL from a phone network; login walls, basic auth, and localhost break the preview.</li>
+<li><b>Format &amp; weight</b> — JPEG or PNG; keep under ~300&nbsp;KB so mobile scrapes finish. Very large files often drop the thumbnail.</li>
+<li><b>Size</b> — 1200 × 630 still works; tiny images (&lt;~300&nbsp;px on a side) are skipped.</li>
+<li><b>Cache</b> — WhatsApp caches hard. Bump <code>?v=2</code> on the image URL after edits; there is no public “scrape again” debugger like Facebook’s.</li>
+</ol>
+<p>Same meta block that fixes Facebook/X usually fixes WhatsApp once the image is reachable.</p>
 <h2>The full tag set to copy</h2>
 <pre>&lt;meta property="og:type" content="website"&gt;
 &lt;meta property="og:title" content="Your title"&gt;
@@ -50,6 +52,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 &lt;meta name="twitter:card" content="summary_large_image"&gt;</pre>
 <div class="box"><b>Do it in your browser, free:</b> <a href="https://arnavjhajharia.github.io/ogkit/">ogkit</a> runs entirely on your device. Nothing is uploaded and there's no sign-up.<br><a class="cta" href="https://arnavjhajharia.github.io/ogkit/">Open ogkit &rarr;</a></div>
 <h2>FAQ</h2><h3>What is the best OG image size?</h3><p>1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack and Discord.</p><h3>Why does my link preview show no image?</h3><p>The most common causes are a relative og:image URL, an image the crawler can&#x27;t fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger.</p><h3>How do I get a large image card on X (Twitter)?</h3><p>Add &lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt; alongside your og:image tag.</p><h3>Do I need separate twitter:image tags?</h3><p>No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing.</p>
+<h3>Why does WhatsApp show no thumbnail for my link?</h3><p>Use an absolute https:// og:image URL (JPEG/PNG, preferably under ~300&nbsp;KB), make sure the image is publicly fetchable, and bump <code>?v=2</code> after changes — WhatsApp caches previews aggressively and has no public debugger.</p>
 <p style="font-size:15px;color:var(--muted);margin:32px 0 0">Related guides: <a href="https://arnavjhajharia.github.io/appshot/screenshot-sizes/#6-5-inch-display">App Store screenshot sizes (6.5&quot; / 2026)</a> ·
 <a href="https://arnavjhajharia.github.io/favikit/favicon-sizes/#force-favicon-refresh">Favicon not updating (cache bust)</a> ·
 <a href="https://arnavjhajharia.github.io/shipcopy/whats-new-from-changelog/">What&apos;s New from a changelog</a></p>
