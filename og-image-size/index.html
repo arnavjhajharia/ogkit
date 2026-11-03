@@ -1,0 +1,48 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OG image size and meta tags (1200x630): why your link preview has no image</title>
+<meta name="description" content="The og:image size that works everywhere (1200x630), the exact meta tags to copy, and why previews break: relative URLs, a missing twitter:card tag, and cached previews.">
+<link rel="canonical" href="https://arnavjhajharia.github.io/ogkit/og-image-size/">
+<meta property="og:title" content="OG image size and meta tags (1200x630): why your link preview has no image"><meta property="og:description" content="The og:image size that works everywhere (1200x630), the exact meta tags to copy, and why previews break: relative URLs, a missing twitter:card tag, and cached previews.">
+<meta property="og:url" content="https://arnavjhajharia.github.io/ogkit/og-image-size/"><meta property="og:type" content="article">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the best OG image size?", "acceptedAnswer": {"@type": "Answer", "text": "1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack and Discord."}}, {"@type": "Question", "name": "Why does my link preview show no image?", "acceptedAnswer": {"@type": "Answer", "text": "The most common causes are a relative og:image URL, an image the crawler can't fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger."}}, {"@type": "Question", "name": "How do I get a large image card on X (Twitter)?", "acceptedAnswer": {"@type": "Answer", "text": "Add <meta name=\"twitter:card\" content=\"summary_large_image\"> alongside your og:image tag."}}, {"@type": "Question", "name": "Do I need separate twitter:image tags?", "acceptedAnswer": {"@type": "Answer", "text": "No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing."}}]}</script>
+<style>
+:root{--bg:#0d0e14;--fg:#e9e9f2;--muted:#9a9ab0;--line:#262838;--acc:#8b7cff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 22px 60px}a{color:var(--acc)}
+h1{font-size:34px;line-height:1.2;margin:0 0 10px}h2{font-size:24px;margin:38px 0 10px}h3{font-size:18px;margin:24px 0 4px}
+.lead{color:var(--muted);margin:0 0 26px}table{border-collapse:collapse;width:100%;margin:12px 0;font-size:15px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}th{background:#161826}
+code,pre{font-family:Menlo,Consolas,monospace;font-size:14px;background:#161826;border-radius:6px}code{padding:1px 5px}
+pre{padding:14px;overflow:auto;border:1px solid var(--line)}.cta{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:10px;margin:8px 0}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#12131c;margin:22px 0}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:48px;padding-top:16px}
+</style></head><body><main>
+<p style="margin:0 0 18px;font-size:14px"><a href="https://arnavjhajharia.github.io/ogkit/">&larr; ogkit</a></p>
+<h1>OG image size and tags: why your link preview has no image</h1>
+<p class="lead">Use a <b>1200 × 630</b> PNG or JPEG, reference it with a <b>full https:// URL</b>, add <b>twitter:card = summary_large_image</b>, and re-scrape after every change.</p>
+<h2>Rule 1: size 1200 × 630</h2>
+<p>1200 × 630 (a 1.91:1 ratio) is the size Facebook recommends and the one X, LinkedIn, Slack and Discord all display well. Export at 2× (2400 × 1260) if you want it sharp on retina screens, but keep the file small. Keep the title big and centred: some apps crop to a square or show a small thumbnail.</p>
+<h2>Rule 2: a full https:// URL</h2>
+<pre>&lt;meta property="og:image" content="https://example.com/og.png"&gt;
+&lt;meta property="og:image:width" content="1200"&gt;
+&lt;meta property="og:image:height" content="630"&gt;</pre>
+<p>The Open Graph protocol expects an absolute URL. A relative path like <code>/og.png</code> often shows no image at all.</p>
+<h2>Rule 3: the large-card tag for X</h2>
+<pre>&lt;meta name="twitter:card" content="summary_large_image"&gt;</pre>
+<p>Without it, X falls back to a small square thumbnail. X reads <code>og:title</code>, <code>og:description</code> and <code>og:image</code> if you don't set separate <code>twitter:</code> tags.</p>
+<h2>Rule 4: previews are cached</h2>
+<p>Platforms cache the preview the first time a link is shared. After you change the image, refresh it with <a href="https://www.linkedin.com/post-inspector/">LinkedIn Post Inspector</a> or the <a href="https://developers.facebook.com/tools/debug/">Facebook Sharing Debugger</a>, or add a version query string (<code>og.png?v=2</code>).</p>
+<h2>The full tag set to copy</h2>
+<pre>&lt;meta property="og:type" content="website"&gt;
+&lt;meta property="og:title" content="Your title"&gt;
+&lt;meta property="og:description" content="One sentence about the page"&gt;
+&lt;meta property="og:url" content="https://example.com/page"&gt;
+&lt;meta property="og:image" content="https://example.com/og.png"&gt;
+&lt;meta name="twitter:card" content="summary_large_image"&gt;</pre>
+<div class="box"><b>Do it in your browser, free:</b> <a href="https://arnavjhajharia.github.io/ogkit/">ogkit</a> runs entirely on your device. Nothing is uploaded and there's no sign-up.<br><a class="cta" href="https://arnavjhajharia.github.io/ogkit/">Open ogkit &rarr;</a></div>
+<h2>FAQ</h2><h3>What is the best OG image size?</h3><p>1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack and Discord.</p><h3>Why does my link preview show no image?</h3><p>The most common causes are a relative og:image URL, an image the crawler can&#x27;t fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger.</p><h3>How do I get a large image card on X (Twitter)?</h3><p>Add &lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt; alongside your og:image tag.</p><h3>Do I need separate twitter:image tags?</h3><p>No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing.</p>
+<footer>Part of The Ship Kit, free browser tools for shipping apps and sites: <a href="https://arnavjhajharia.github.io/appshot/">AppShot</a> (store screenshots) ·
+<a href="https://arnavjhajharia.github.io/favikit/">Favikit</a> (favicons) · <a href="https://arnavjhajharia.github.io/ogkit/">ogkit</a> (OG images).
+Written with the help of an AI assistant and checked against the official documentation on 3 November 2026. Platforms change their rules, so re-check before you submit.</footer>
+</main></body></html>
