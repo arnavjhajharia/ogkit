@@ -193,8 +193,10 @@ ship("ogkit"); // live in 90s</textarea>
     <div class="dl">
       <button class="btn" id="dlpng">Download PNG (1200×630)</button>
       <button class="btn sec" id="dl2x">Download @2x (2400×1260)</button>
+      <button class="btn sec" id="dljpg">JPG under 300 KB (WhatsApp-safe)</button>
       <button class="btn sec" id="dltw">Twitter (1600×900)</button>
     </div>
+    <p style="font-size:13px;color:var(--mut);margin:6px 0 0">Grain makes PNGs heavy: about 1.5 MB at 1200×630 and about 6 MB at @2x, which is over the 5 MB X limit most guides cite. For og:image, use the 1200×630 PNG or the JPG. WhatsApp often skips preview images over ~300 KB.</p>
     <div class="meta">
       <details>
         <summary>Copy the &lt;meta&gt; tags for this image ↓</summary>
@@ -517,16 +519,28 @@ function download(scale, suffix, w, h){
   draw(1); // reset preview
 }
 function drawCustom(w,h){
-  // temporarily render at a non-630 aspect by scaling the 1200x630 composition into w x h
-  const sx=w/1200; draw(1); // draw at base
-  const base=ctx.getImageData(0,0,1200,630);
+  // render the 1200x630 composition at a uniform scale that covers w x h, then crop the centre
+  // (non-uniform scaling would stretch the text; side padding is wider than the crop, so nothing is cut)
+  const sc=Math.max(w/1200,h/630); draw(sc);
+  const cw=canvas.width, ch=canvas.height;
+  const tmp=document.createElement("canvas");tmp.width=cw;tmp.height=ch;tmp.getContext("2d").drawImage(canvas,0,0);
   canvas.width=w; canvas.height=h;
-  const tmp=document.createElement("canvas");tmp.width=1200;tmp.height=630;tmp.getContext("2d").putImageData(base,0,0);
-  ctx.drawImage(tmp,0,0,1200,630,0,0,w,h);
+  ctx.drawImage(tmp,(cw-w)/2,(ch-h)/2,w,h,0,0,w,h);
+}
+function downloadJpg(){
+  // 1200x630 JPEG at the highest quality that stays under ~300 KB (WhatsApp skips large preview images)
+  draw(1);
+  const limit=295*1024, bytes=u=>Math.round((u.length-23)*0.75);
+  let lo=0.4, hi=0.95, best=canvas.toDataURL("image/jpeg",lo);
+  for(let i=0;i<7;i++){ const q=(lo+hi)/2, u=canvas.toDataURL("image/jpeg",q); if(bytes(u)<=limit){best=u;lo=q;} else hi=q; }
+  const a=document.createElement("a"); a.href=best; a.download="og-1200x630.jpg"; a.click();
+  const b=$("dljpg"), t=b.textContent; b.textContent="Saved "+Math.round(bytes(best)/1024)+" KB ✓"; setTimeout(()=>b.textContent=t,1800);
+  draw(1);
 }
 $("dlpng").onclick=()=>download(1,"1200x630");
 $("dl2x").onclick=()=>download(2,"2400x1260@2x");
 $("dltw").onclick=()=>download(1,"twitter-1600x900",1600,900);
+$("dljpg").onclick=downloadJpg;
 $("copymeta").onclick=()=>{navigator.clipboard.writeText($("metasnippet").textContent);$("copymeta").textContent="Copied ✓";setTimeout(()=>$("copymeta").textContent="Copy meta tags",1400);};
 
 // render once fonts are ready
