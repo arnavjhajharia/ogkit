@@ -21,17 +21,17 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <p style="margin:0 0 18px;font-size:14px"><a href="https://arnavjhajharia.github.io/ogkit/">&larr; ogkit</a></p>
 <h1>OG image size and tags: why your link preview has no image</h1>
 <p class="lead">Use a <b>1200 × 630</b> PNG or JPEG, reference it with a <b>full https:// URL</b>, add <b>twitter:card = summary_large_image</b>, and re-scrape after every change.</p>
-<h2>Rule 1: size 1200 × 630</h2>
+<h2 id="og-image-size">Rule 1: size 1200 × 630</h2>
 <p>1200 × 630 (a 1.91:1 ratio) is the size Facebook recommends and the one X, LinkedIn, Slack and Discord all display well. Export at 2× (2400 × 1260) if you want it sharp on retina screens, but keep the file small. Keep the title big and centred: some apps crop to a square or show a small thumbnail.</p>
 <h2>Rule 2: a full https:// URL</h2>
 <pre>&lt;meta property="og:image" content="https://example.com/og.png"&gt;
 &lt;meta property="og:image:width" content="1200"&gt;
 &lt;meta property="og:image:height" content="630"&gt;</pre>
 <p>The Open Graph protocol expects an absolute URL. A relative path like <code>/og.png</code> often shows no image at all.</p>
-<h2>Rule 3: the large-card tag for X</h2>
+<h2 id="twitter-card">Rule 3: the large-card tag for X (Twitter)</h2>
 <pre>&lt;meta name="twitter:card" content="summary_large_image"&gt;</pre>
 <p>Without it, X falls back to a small square thumbnail. X reads <code>og:title</code>, <code>og:description</code> and <code>og:image</code> if you don't set separate <code>twitter:</code> tags.</p>
-<h2>Rule 4: previews are cached</h2>
+<h2 id="preview-cache">Rule 4: previews are cached</h2>
 <p>Platforms cache the preview the first time a link is shared. After you change the image, refresh it with <a href="https://www.linkedin.com/post-inspector/">LinkedIn Post Inspector</a> or the <a href="https://developers.facebook.com/tools/debug/">Facebook Sharing Debugger</a>, or add a version query string (<code>og.png?v=2</code>).</p>
 <h2>The full tag set to copy</h2>
 <pre>&lt;meta property="og:type" content="website"&gt;

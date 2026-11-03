@@ -11,7 +11,7 @@ Your page looks fine in the browser. Paste the URL in Slack and you get title + 
 
 Open Graph expects **1200 × 630** (1.91:1). Tall phone screenshots get cropped oddly or dropped. Twitter/X often uses **`twitter:card` = summary_large_image** with the same asset or **1600 × 900**.
 
-Reference: [OG image size & meta tags](https://arnavjhajharia.github.io/ogkit/og-image-size/).
+Reference: [OG image size & meta tags](https://arnavjhajharia.github.io/ogkit/og-image-size/#twitter-card) (1200×630 + `summary_large_image`).
 
 ## 2. Relative URL in `og:image`
 
