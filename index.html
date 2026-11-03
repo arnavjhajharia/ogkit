@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ogkit — free OG / social card image generator</title>
+<meta name="description" content="Generate perfect 1200×630 Open Graph / social share images in your browser. Dev-themed templates, gradients, grain, retina export, and a copy-paste meta-tag snippet. Free, no sign-up, nothing uploaded." />
+<meta name="theme-color" content="#0b0b12" />
+<!-- Open Graph (this tool eats its own dog food) -->
+<meta property="og:title" content="ogkit — free OG / social card generator" />
+<meta property="og:description" content="Make 1200×630 social share images in your browser. No sign-up, nothing uploaded." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b12; --panel:#13131d; --panel2:#1b1b28; --line:#2a2a3c;
+    --ink:#ececf4; --mut:#9a9ab0; --acc:#7c5cff; --acc2:#19d3c5;
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font:15px/1.5 Inter,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--acc2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{
+    display:flex;align-items:center;gap:12px;
+    padding:16px 22px;border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:rgba(11,11,18,.82);backdrop-filter:blur(8px);z-index:5;
+  }
+  .logo{font-weight:900;letter-spacing:-.03em;font-size:20px}
+  .logo span{color:var(--acc)}
+  .tag{color:var(--mut);font-size:13px}
+  .spacer{flex:1}
+  .ghlink{font-size:13px;color:var(--mut)}
+  main{display:grid;grid-template-columns:360px 1fr;gap:0;min-height:calc(100% - 59px)}
+  .controls{padding:20px 22px;border-right:1px solid var(--line);overflow:auto}
+  .stage{padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px;overflow:auto}
+  .group{margin-bottom:20px}
+  .group h3{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--mut);margin:0 0 10px}
+  label{display:block;font-size:12px;color:var(--mut);margin:0 0 5px}
+  input[type=text],textarea,select{
+    width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:9px;padding:9px 11px;font:inherit;font-size:14px;outline:none;
+  }
+  input[type=text]:focus,textarea:focus,select:focus{border-color:var(--acc)}
+  textarea{resize:vertical;min-height:62px}
+  .field{margin-bottom:12px}
+  .row{display:flex;gap:8px}
+  .row>*{flex:1}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{
+    border:1px solid var(--line);background:var(--panel2);color:var(--ink);
+    border-radius:8px;padding:7px 11px;font-size:12.5px;cursor:pointer;user-select:none;
+  }
+  .chip:hover{border-color:var(--acc)}
+  .chip.on{border-color:var(--acc);background:rgba(124,92,255,.16);color:#fff}
+  .sw{display:flex;flex-wrap:wrap;gap:7px}
+  .sw button{width:30px;height:30px;border-radius:7px;border:2px solid transparent;cursor:pointer;padding:0}
+  .sw button.on{border-color:#fff}
+  .range{display:flex;align-items:center;gap:9px}
+  .range input[type=range]{flex:1}
+  .range span{font-size:12px;color:var(--mut);min-width:34px;text-align:right}
+  .toggle{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--ink)}
+  .toggle input{width:16px;height:16px;accent-color:var(--acc)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--acc);color:#fff;border:none;border-radius:9px;
+    padding:11px 16px;font:inherit;font-weight:600;cursor:pointer;
+  }
+  .btn:hover{filter:brightness(1.08)}
+  .btn.sec{background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
+  .btn.block{width:100%}
+  .previewwrap{
+    width:100%;max-width:900px;border-radius:14px;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);border:1px solid var(--line);background:#000;
+  }
+  canvas#c{width:100%;height:auto;display:block}
+  .meta{width:100%;max-width:900px}
+  .meta details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 16px}
+  .meta summary{cursor:pointer;padding:14px 0;font-weight:600;font-size:14px}
+  .meta pre{
+    background:#0a0a10;border:1px solid var(--line);border-radius:9px;
+    padding:12px;overflow:auto;font:12.5px/1.6 'JetBrains Mono',monospace;color:#cdd3ff;margin:0 0 14px;
+  }
+  .dl{display:flex;gap:10px;width:100%;max-width:900px;flex-wrap:wrap}
+  .dl .btn{flex:1;min-width:150px}
+  .foot{max-width:900px;width:100%;color:var(--mut);font-size:12.5px;line-height:1.7}
+  .foot .pro{color:var(--ink);background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 14px;margin:10px 0}
+  @media(max-width:860px){
+    main{grid-template-columns:1fr}
+    .controls{border-right:none;border-bottom:1px solid var(--line)}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">og<span>kit</span></div>
+  <div class="tag">free social-card generator · 1200×630 · in your browser</div>
+  <div class="spacer"></div>
+  <div class="ghlink">no sign-up · nothing uploaded</div>
+</header>
+
+<main>
+  <section class="controls">
+    <div class="group">
+      <h3>Content</h3>
+      <div class="field"><label>Eyebrow / badge</label><input type="text" id="eyebrow" value="BLOG" maxlength="40"></div>
+      <div class="field"><label>Title</label><textarea id="title" maxlength="140">Ship your side project before the weekend ends</textarea></div>
+      <div class="field"><label>Subtitle / description</label><textarea id="subtitle" maxlength="200">A field guide to going from idea to live URL in 48 hours.</textarea></div>
+      <div class="row">
+        <div class="field"><label>Author / handle</label><input type="text" id="author" value="@indiehacker" maxlength="40"></div>
+        <div class="field"><label>Site / URL</label><input type="text" id="site" value="yoursite.dev" maxlength="40"></div>
+      </div>
+      <div class="field">
+        <label>Logo / avatar (optional)</label>
+        <input type="file" id="logo" accept="image/*" style="font-size:12px;color:var(--mut)">
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Layout</h3>
+      <div class="chips" id="layouts">
+        <div class="chip on" data-v="left">Left</div>
+        <div class="chip" data-v="center">Center</div>
+        <div class="chip" data-v="split">Split</div>
+        <div class="chip" data-v="code">Code card</div>
+        <div class="chip" data-v="quote">Quote</div>
+      </div>
+      <div class="field" id="codefield" style="display:none;margin-top:12px">
+        <label>Code snippet (code-card layout)</label>
+        <textarea id="code" style="font-family:'JetBrains Mono',monospace;font-size:12px" maxlength="400">const ship = (idea) => deploy(idea);
+ship("ogkit"); // live in 90s</textarea>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Background</h3>
+      <div class="chips" id="bgstyle">
+        <div class="chip on" data-v="gradient">Gradient</div>
+        <div class="chip" data-v="mesh">Mesh</div>
+        <div class="chip" data-v="solid">Solid</div>
+        <div class="chip" data-v="dots">Dot grid</div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Palette</label>
+        <div class="sw" id="palettes"></div>
+      </div>
+      <div class="field">
+        <label>Grain <span id="grainv" style="color:var(--mut)">22%</span></label>
+        <div class="range"><input type="range" id="grain" min="0" max="80" value="22"></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Type</h3>
+      <div class="field"><label>Font</label>
+        <select id="font">
+          <option value="Inter">Inter (sans)</option>
+          <option value="Fraunces">Fraunces (serif)</option>
+          <option value="JetBrains Mono">JetBrains Mono</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Title size <span id="tsv" style="color:var(--mut)">72</span></label>
+        <div class="range"><input type="range" id="tsize" min="44" max="104" value="72"></div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="dark" checked> Dark text mode is auto from palette</label>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="previewwrap"><canvas id="c" width="1200" height="630"></canvas></div>
+    <div class="dl">
+      <button class="btn" id="dlpng">Download PNG (1200×630)</button>
+      <button class="btn sec" id="dl2x">Download @2x (2400×1260)</button>
+      <button class="btn sec" id="dltw">Twitter (1600×900)</button>
+    </div>
+    <div class="meta">
+      <details>
+        <summary>Copy the &lt;meta&gt; tags for this image ↓</summary>
+        <pre id="metasnippet"></pre>
+        <button class="btn sec" id="copymeta" style="margin-bottom:16px">Copy meta tags</button>
+      </details>
+    </div>
+    <div class="foot">
+      <div class="pro">
+        <strong>ogkit Pro template pack</strong> — 24 extra layouts, premium font pairings, and 40 grain-textured
+        palettes, as a one-time download. <a href="#" id="prolink">Get it on Gumroad →</a>
+        <span style="opacity:.7">(link added at launch)</span>
+      </div>
+      100% client-side. Your text and logo never leave the browser — there is no server. Part of the indie ship kit:
+      <a href="https://arnavjhajharia.github.io/favikit/" target="_blank" rel="noopener">favikit</a> (favicons).
+      Built with a plain &lt;canvas&gt;, no tracking.
+    </div>
+  </section>
+</main>
+
+<script>
+// ---------- palettes ----------
+// each: [bgA, bgB, accent, textLight(bool)]  textLight true = light text on dark bg
+const PALETTES = [
+  {name:"Indigo night", a:"#1a1333", b:"#0b0b14", acc:"#8b6dff", light:true},
+  {name:"Teal deep",    a:"#06333a", b:"#041417", acc:"#19d3c5", light:true},
+  {name:"Sunset",       a:"#3a1324", b:"#120a18", acc:"#ff7a59", light:true},
+  {name:"Forest",       a:"#0d2a1e", b:"#07140e", acc:"#4ade80", light:true},
+  {name:"Slate",        a:"#1f2430", b:"#0c0f16", acc:"#9aa6ff", light:true},
+  {name:"Crimson",      a:"#330d13", b:"#140506", acc:"#ff5068", light:true},
+  {name:"Paper",        a:"#ffffff", b:"#eef0f5", acc:"#5b4bff", light:false},
+  {name:"Cream",        a:"#fdf6e9", b:"#f3e7cf", acc:"#c0632a", light:false},
+  {name:"Mint light",   a:"#eafaf4", b:"#cdeee0", acc:"#0d9b74", light:false},
+  {name:"Sky light",    a:"#eaf2ff", b:"#d3e4ff", acc:"#2563eb", light:false},
+];
+
+const S = {
+  eyebrow:"BLOG", title:"", subtitle:"", author:"@indiehacker", site:"yoursite.dev",
+  layout:"left", bgstyle:"gradient", pal:0, grain:22, font:"Inter", tsize:72,
+  code:"", logo:null,
+};
+
+const $ = id => document.getElementById(id);
+const canvas = $("c"), ctx = canvas.getContext("2d");
+
+// build palette swatches
+const palWrap = $("palettes");
+PALETTES.forEach((p,i)=>{
+  const b=document.createElement("button");
+  b.style.background=`linear-gradient(135deg,${p.a},${p.b})`;
+  b.title=p.name; if(i===0)b.classList.add("on");
+  b.onclick=()=>{S.pal=i;[...palWrap.children].forEach(c=>c.classList.remove("on"));b.classList.add("on");draw();};
+  palWrap.appendChild(b);
+});
+
+function chipGroup(wrapId, key){
+  const w=$(wrapId);
+  w.querySelectorAll(".chip").forEach(ch=>{
+    ch.onclick=()=>{
+      w.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
+      ch.classList.add("on"); S[key]=ch.dataset.v;
+      if(key==="layout") $("codefield").style.display = (S.layout==="code")?"block":"none";
+      draw();
+    };
+  });
+}
+chipGroup("layouts","layout"); chipGroup("bgstyle","bgstyle");
+
+// bind inputs
+const bind=(id,key,ev="input",fn=v=>v)=>{ $(id).addEventListener(ev,e=>{S[key]=fn(e.target.value);draw();}); };
+bind("eyebrow","eyebrow"); bind("title","title"); bind("subtitle","subtitle");
+bind("author","author"); bind("site","site"); bind("code","code");
+$("font").addEventListener("change",e=>{S.font=e.target.value;draw();});
+$("tsize").addEventListener("input",e=>{S.tsize=+e.target.value;$("tsv").textContent=e.target.value;draw();});
+$("grain").addEventListener("input",e=>{S.grain=+e.target.value;$("grainv").textContent=e.target.value+"%";draw();});
+$("logo").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const img=new Image(); img.onload=()=>{S.logo=img;draw();}; img.src=URL.createObjectURL(f);
+});
+
+// read initial values from DOM
+S.title=$("title").value; S.subtitle=$("subtitle").value; S.code=$("code").value;
+
+// ---------- grain cache ----------
+let grainCanvas=null;
+function makeGrain(w,h){
+  const g=document.createElement("canvas"); g.width=w; g.height=h;
+  const gx=g.getContext("2d"); const id=gx.createImageData(w,h); const d=id.data;
+  for(let i=0;i<d.length;i+=4){ const v=Math.random()*255; d[i]=d[i+1]=d[i+2]=v; d[i+3]=255; }
+  gx.putImageData(id,0,0); return g;
+}
+
+// ---------- text helpers ----------
+function wrap(text, maxW, font){
+  ctx.font=font; const words=text.split(/\s+/); const lines=[]; let cur="";
+  for(const w of words){ const t=cur?cur+" "+w:w; if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;} else cur=t; }
+  if(cur)lines.push(cur); return lines;
+}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+// ---------- draw ----------
+function draw(scale=1){
+  const W=1200*scale, H=630*scale;
+  canvas.width=W; canvas.height=H;
+  const p=PALETTES[S.pal];
+  const fg = p.light ? "#f5f5fb" : "#14141c";
+  const fgMut = p.light ? "rgba(245,245,251,.62)" : "rgba(20,20,28,.58)";
+
+  // background
+  if(S.bgstyle==="solid"){ ctx.fillStyle=p.b; ctx.fillRect(0,0,W,H); }
+  else if(S.bgstyle==="gradient"){
+    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,p.a); g.addColorStop(1,p.b);
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  } else if(S.bgstyle==="mesh"){
+    ctx.fillStyle=p.b; ctx.fillRect(0,0,W,H);
+    const blobs=[[0.18,0.22,p.a],[0.82,0.3,p.acc],[0.7,0.85,p.a],[0.25,0.8,p.acc]];
+    blobs.forEach(([bx,by,col])=>{
+      const rad=ctx.createRadialGradient(bx*W,by*H,0,bx*W,by*H,W*0.5);
+      rad.addColorStop(0,col); rad.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.globalAlpha=.55; ctx.fillStyle=rad; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+    });
+  } else if(S.bgstyle==="dots"){
+    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,p.a); g.addColorStop(1,p.b);
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = p.light ? "rgba(255,255,255,.07)":"rgba(0,0,0,.06)";
+    const gap=34*scale, r=2*scale;
+    for(let y=gap;y<H;y+=gap)for(let x=gap;x<W;x+=gap){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();}
+  }
+
+  // accent bar top
+  ctx.fillStyle=p.acc; ctx.fillRect(0,0,W,8*scale);
+
+  const pad=72*scale;
+  ctx.textBaseline="top";
+  const fam=S.font;
+
+  if(S.layout==="code"){ drawCode(W,H,scale,p,fg,fgMut,fam,pad); }
+  else if(S.layout==="quote"){ drawQuote(W,H,scale,p,fg,fgMut,fam,pad); }
+  else { drawStandard(W,H,scale,p,fg,fgMut,fam,pad); }
+
+  // grain overlay
+  if(S.grain>0){
+    if(!grainCanvas||grainCanvas.width!==W) grainCanvas=makeGrain(W,H);
+    ctx.globalAlpha=S.grain/100*0.5;
+    ctx.globalCompositeOperation = p.light ? "screen":"multiply";
+    ctx.drawImage(grainCanvas,0,0);
+    ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+  }
+}
+
+function drawFooter(W,H,scale,p,fg,fgMut,fam,pad){
+  const y=H-pad-10*scale;
+  ctx.textBaseline="alphabetic";
+  if(S.logo){
+    const sz=40*scale; ctx.save(); rr(pad,y-sz+6*scale,sz,sz,8*scale); ctx.clip();
+    ctx.drawImage(S.logo,pad,y-sz+6*scale,sz,sz); ctx.restore();
+  }
+  const tx = S.logo ? pad+54*scale : pad;
+  ctx.font=`600 ${22*scale}px ${fam},sans-serif`; ctx.fillStyle=fg;
+  ctx.fillText(S.author||"", tx, y);
+  if(S.site){
+    ctx.font=`500 ${22*scale}px ${fam},sans-serif`; ctx.fillStyle=fgMut;
+    const aw=ctx.measureText(S.site).width; ctx.fillText(S.site, W-pad-aw, y);
+  }
+  ctx.textBaseline="top";
+}
+
+function drawStandard(W,H,scale,p,fg,fgMut,fam,pad){
+  const center=S.layout==="center";
+  const maxW=(S.layout==="split")?(W*0.56):(W-pad*2);
+  const cx = center ? W/2 : pad;
+  if(center)ctx.textAlign="center"; else ctx.textAlign="left";
+
+  let y=pad;
+  // eyebrow pill
+  if(S.eyebrow){
+    ctx.font=`700 ${20*scale}px ${fam},sans-serif`;
+    const tw=ctx.measureText(S.eyebrow.toUpperCase()).width;
+    const pw=tw+32*scale, ph=38*scale, px=center?cx-pw/2:cx;
+    ctx.fillStyle=p.acc; rr(px,y,pw,ph,ph/2); ctx.fill();
+    ctx.fillStyle="#fff"; ctx.textBaseline="middle";
+    ctx.fillText(S.eyebrow.toUpperCase(), center?cx:px+16*scale, y+ph/2+1);
+    if(center){const m=ctx.measureText(S.eyebrow.toUpperCase());}
+    ctx.textBaseline="top"; y+=ph+34*scale;
+  }
+  // title
+  const tfont=`800 ${S.tsize*scale}px ${fam},sans-serif`;
+  const lines=wrap(S.title,maxW,tfont); ctx.font=tfont; ctx.fillStyle=fg;
+  const lh=S.tsize*1.12*scale;
+  for(const ln of lines){ ctx.fillText(ln,cx,y); y+=lh; }
+  // subtitle
+  if(S.subtitle){
+    y+=14*scale;
+    const sf=`500 ${30*scale}px ${fam},sans-serif`;
+    const sl=wrap(S.subtitle,maxW,sf); ctx.font=sf; ctx.fillStyle=fgMut;
+    for(const ln of sl){ ctx.fillText(ln,cx,y); y+=38*scale; }
+  }
+  ctx.textAlign="left";
+  // split accent panel
+  if(S.layout==="split"){
+    const panelX=W*0.64;
+    ctx.fillStyle=p.acc; ctx.globalAlpha=.14; rr(panelX,pad,W-panelX-pad,H-pad*2,20*scale); ctx.fill(); ctx.globalAlpha=1;
+    if(S.logo){const sz=Math.min(W-panelX-pad,H-pad*2)*0.5;ctx.save();rr(panelX+(W-panelX-pad-sz)/2,(H-sz)/2,sz,sz,18*scale);ctx.clip();ctx.drawImage(S.logo,panelX+(W-panelX-pad-sz)/2,(H-sz)/2,sz,sz);ctx.restore();}
+  }
+  drawFooter(W,H,scale,p,fg,fgMut,fam,pad);
+}
+
+function drawQuote(W,H,scale,p,fg,fgMut,fam,pad){
+  ctx.textAlign="left";
+  ctx.font=`800 ${120*scale}px Fraunces,serif`; ctx.fillStyle=p.acc;
+  ctx.fillText("“",pad,pad-20*scale);
+  let y=pad+90*scale;
+  const qfont=`600 ${Math.min(S.tsize,64)*scale}px Fraunces,serif`;
+  const lines=wrap(S.title,W-pad*2,qfont); ctx.font=qfont; ctx.fillStyle=fg;
+  const lh=Math.min(S.tsize,64)*1.2*scale;
+  for(const ln of lines){ctx.fillText(ln,pad,y);y+=lh;}
+  drawFooter(W,H,scale,p,fg,fgMut,fam,pad);
+}
+
+function drawCode(W,H,scale,p,fg,fgMut,fam,pad){
+  ctx.textAlign="left";
+  // heading
+  ctx.font=`800 ${44*scale}px ${fam},sans-serif`; ctx.fillStyle=fg;
+  const hl=wrap(S.title,W-pad*2,ctx.font); let y=pad;
+  for(const ln of hl){ctx.fillText(ln,pad,y);y+=50*scale;}
+  y+=14*scale;
+  // code window
+  const cwX=pad, cwY=y, cwW=W-pad*2, cwH=H-y-pad-20*scale;
+  ctx.fillStyle = p.light ? "rgba(0,0,0,.34)":"rgba(255,255,255,.72)";
+  rr(cwX,cwY,cwW,cwH,16*scale); ctx.fill();
+  // title bar dots
+  ["#ff5f57","#febc2e","#28c840"].forEach((c,i)=>{ctx.fillStyle=c;ctx.beginPath();ctx.arc(cwX+26*scale+i*22*scale,cwY+24*scale,6*scale,0,7);ctx.fill();});
+  // code text
+  ctx.font=`500 ${22*scale}px 'JetBrains Mono',monospace`;
+  const codeLines=S.code.split("\n");
+  let cy=cwY+54*scale;
+  codeLines.forEach(ln=>{
+    ctx.fillStyle=fgMut; ctx.fillText(String(codeLines.indexOf(ln)+1).padStart(2," "),cwX+22*scale,cy);
+    ctx.fillStyle = p.light ? "#d7e0ff":"#2a2f45"; ctx.fillText(ln,cwX+64*scale,cy);
+    cy+=32*scale;
+  });
+  drawFooter(W,H,scale,p,fg,fgMut,fam,pad);
+}
+
+// ---------- meta snippet ----------
+function updateMeta(){
+  const t=(S.title||"").replace(/"/g,'&quot;');
+  const d=(S.subtitle||"").replace(/"/g,'&quot;');
+  const url=S.site?("https://"+S.site.replace(/^https?:\/\//,"")):"https://yoursite.dev";
+  $("metasnippet").textContent =
+`<meta property="og:title" content="${t}" />
+<meta property="og:description" content="${d}" />
+<meta property="og:image" content="${url}/og.png" />
+<meta property="og:url" content="${url}" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${t}" />
+<meta name="twitter:description" content="${d}" />
+<meta name="twitter:image" content="${url}/og.png" />`;
+}
+
+// ---------- export ----------
+function download(scale, suffix, w, h){
+  // custom size path (twitter) vs scaled OG
+  if(w&&h){ drawCustom(w,h); } else { draw(scale); }
+  const url=canvas.toDataURL("image/png");
+  const a=document.createElement("a"); a.href=url; a.download=`og-${suffix}.png`; a.click();
+  draw(1); // reset preview
+}
+function drawCustom(w,h){
+  // temporarily render at a non-630 aspect by scaling the 1200x630 composition into w x h
+  const sx=w/1200; draw(1); // draw at base
+  const base=ctx.getImageData(0,0,1200,630);
+  canvas.width=w; canvas.height=h;
+  const tmp=document.createElement("canvas");tmp.width=1200;tmp.height=630;tmp.getContext("2d").putImageData(base,0,0);
+  ctx.drawImage(tmp,0,0,1200,630,0,0,w,h);
+}
+$("dlpng").onclick=()=>download(1,"1200x630");
+$("dl2x").onclick=()=>download(2,"2400x1260@2x");
+$("dltw").onclick=()=>download(1,"twitter-1600x900",1600,900);
+$("copymeta").onclick=()=>{navigator.clipboard.writeText($("metasnippet").textContent);$("copymeta").textContent="Copied ✓";setTimeout(()=>$("copymeta").textContent="Copy meta tags",1400);};
+$("prolink").onclick=e=>{e.preventDefault();alert("Gumroad Pro pack link goes here at launch.");};
+
+// render once fonts are ready
+function boot(){ updateMeta(); draw(1); }
+const _draw=draw;
+draw=function(s){ _draw(s); updateMeta(); };
+if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(boot); setTimeout(boot,600);} else boot();
+</script>
+</body>
+</html>
