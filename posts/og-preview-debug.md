@@ -83,7 +83,7 @@ A minimal block that works everywhere:
 
 ## Making the 1200 × 630 image
 
-If you don't have a designer, [ogkit](https://arnavjhajharia.github.io/ogkit/) is a free in-browser card maker I built. It exports a 1200 × 630 PNG and copies the tag block above. Nothing is uploaded and no account is needed. There's an optional [paid preset pack ($12)](https://bharatankh.gumroad.com/l/ogkit-pro) if you want more layouts.
+If you don't have a designer, [ogkit](https://arnavjhajharia.github.io/ogkit/) is a free in-browser card maker I built. It exports a 1200 × 630 PNG (or a JPG kept under 300 KB, which WhatsApp previews handle more reliably) and copies the tag block above. Nothing is uploaded and no account is needed. There's an optional [paid preset pack ($12)](https://bharatankh.gumroad.com/l/ogkit-pro) if you want more layouts.
 
 **Related (same Ship Kit):** [App Store screenshot sizes in 2026](https://dev.to/bharat_ankh_920bf0864220a/app-store-screenshot-sizes-in-2026-which-ones-are-actually-required-24f5) · [Favicon cache fixes after deploy](https://dev.to/bharat_ankh_920bf0864220a/favicon-not-updating-after-deploy-5-fixes-for-the-browsers-favicon-cache-34ip) · [LinkedIn OG image size](https://arnavjhajharia.github.io/ogkit/og-image-size/#linkedin-og-image) · [WhatsApp link preview](https://arnavjhajharia.github.io/ogkit/og-image-size/#whatsapp-link-preview).
 
