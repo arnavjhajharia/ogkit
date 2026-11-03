@@ -34,9 +34,15 @@ A downloadable ZIP, not code — matches the gradient-pack rail already being te
 4. A short **"OG image best practices"** 1-pager (sizes per platform, safe zones, text length).
 Keep the ZIP small (WebP, ~20–40 MB) per the gradient-pack critique — big ZIPs hurt conversion.
 
-### Suite angle
-Part of an indie "ship kit" with [favikit](https://arnavjhajharia.github.io/favikit/) (favicons) and the
-app-store screenshot tool (appshot). Cross-link all three; bundle the Pro packs later.
+### Ship Kit (free tools, cross-linked)
+| Tool | URL |
+|------|-----|
+| **AppShot** — store screenshots | https://arnavjhajharia.github.io/appshot/ |
+| **Favikit** — favicons & PWA icons | https://arnavjhajharia.github.io/favikit/ |
+| **ogkit** — OG / social cards | https://arnavjhajharia.github.io/ogkit/ |
+| **ShipCopy** — changelog → launch copy | https://arnavjhajharia.github.io/shipcopy/ |
+
+Fonts are **self-hosted** under `fonts/` (no third-party requests). MIT licensed.
 
 ## List this project
 
