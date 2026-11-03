@@ -33,6 +33,6 @@ Must be **JPEG/PNG/WebP**, not an HTML page. Common mistake when using dynamic O
 
 ## Make a correct 1200×630 in the browser
 
-[ogkit](https://arnavjhajharia.github.io/ogkit/) renders social cards on a canvas, exports 1× and 2× PNG, and copies the full `og:` / `twitter:` block. No account, no upload.
+[ogkit](https://arnavjhajharia.github.io/ogkit/) renders social cards on a canvas, exports 1× and 2× PNG, and copies the full `og:` / `twitter:` block. No account, no upload. Preset layouts + grain backgrounds: [ogkit Pro on Gumroad ($12)](https://bharatankh.gumroad.com/l/ogkit-pro).
 
 _Disclosure: AI-assisted; MIT [repo](https://github.com/arnavjhajharia/ogkit). Part of the Ship Kit with [AppShot](https://arnavjhajharia.github.io/appshot/) and [Favikit](https://arnavjhajharia.github.io/favikit/)._
