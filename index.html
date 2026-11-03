@@ -146,6 +146,11 @@ ship("ogkit"); // live in 90s</textarea>
         <div class="chip" data-v="mesh">Mesh</div>
         <div class="chip" data-v="solid">Solid</div>
         <div class="chip" data-v="dots">Dot grid</div>
+        <div class="chip" data-v="image">Image</div>
+      </div>
+      <div class="field" id="bgimgfield" style="display:none;margin-top:12px">
+        <label>Background image (1200×630 works best — e.g. the ogkit Pro pack)</label>
+        <input type="file" id="bgimg" accept="image/*" style="font-size:12px;color:var(--mut)">
       </div>
       <div class="field" style="margin-top:12px"><label>Palette</label>
         <div class="sw" id="palettes"></div>
@@ -153,6 +158,15 @@ ship("ogkit"); // live in 90s</textarea>
       <div class="field">
         <label>Grain <span id="grainv" style="color:var(--mut)">22%</span></label>
         <div class="range"><input type="range" id="grain" min="0" max="80" value="22"></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Presets</h3>
+      <div class="chips">
+        <div class="chip" id="presetexport">Export preset (.json)</div>
+        <label class="chip" for="presetimport" style="cursor:pointer">Import preset</label>
+        <input type="file" id="presetimport" accept="application/json,.json" style="display:none">
       </div>
     </div>
 
@@ -226,7 +240,7 @@ const PALETTES = [
 const S = {
   eyebrow:"BLOG", title:"", subtitle:"", author:"@indiehacker", site:"yoursite.dev",
   layout:"left", bgstyle:"gradient", pal:0, grain:22, font:"Inter", tsize:72,
-  code:"", logo:null,
+  code:"", logo:null, bgimg:null,
 };
 
 const $ = id => document.getElementById(id);
@@ -254,6 +268,39 @@ function chipGroup(wrapId, key){
   });
 }
 chipGroup("layouts","layout"); chipGroup("bgstyle","bgstyle");
+$("bgstyle").querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{$("bgimgfield").style.display=(S.bgstyle==="image")?"block":"none";}));
+$("bgimg").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const img=new Image(); img.onload=()=>{S.bgimg=img;draw();}; img.src=URL.createObjectURL(f);
+});
+// ---------- presets ----------
+const PRESET_KEYS=["eyebrow","title","subtitle","author","site","layout","bgstyle","pal","grain","font","tsize","code"];
+function exportPreset(){
+  const o={ogkit:1}; PRESET_KEYS.forEach(k=>o[k]=S[k]);
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(o,null,1)],{type:"application/json"}));
+  a.download="ogkit-preset.json"; a.click();
+}
+function applyPreset(o){
+  PRESET_KEYS.forEach(k=>{ if(o[k]!==undefined) S[k]=o[k]; });
+  S.pal=Math.max(0,Math.min(PALETTES.length-1,+S.pal||0));
+  ["eyebrow","title","subtitle","author","site","code"].forEach(k=>{ if($(k)) $(k).value=S[k]||""; });
+  const setChips=(wrap,key)=>$(wrap).querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.v===S[key]));
+  setChips("layouts","layout"); setChips("bgstyle","bgstyle");
+  $("codefield").style.display=(S.layout==="code")?"block":"none";
+  $("bgimgfield").style.display=(S.bgstyle==="image")?"block":"none";
+  [...palWrap.children].forEach((c,i)=>c.classList.toggle("on",i===S.pal));
+  $("grain").value=S.grain; $("grainv").textContent=S.grain+"%";
+  if($("font")) $("font").value=S.font;
+  if($("tsize")){ $("tsize").value=S.tsize; if($("tsizev")) $("tsizev").textContent=S.tsize+"px"; }
+  draw();
+}
+$("presetexport").onclick=exportPreset;
+$("presetimport").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f) return;
+  f.text().then(t=>{ try{ applyPreset(JSON.parse(t)); }catch(err){ console.warn("ogkit: bad preset",err); } });
+  e.target.value="";
+});
+window.ogkitApplyPreset=applyPreset;
 
 // bind inputs
 const bind=(id,key,ev="input",fn=v=>v)=>{ $(id).addEventListener(ev,e=>{S[key]=fn(e.target.value);draw();}); };
@@ -308,6 +355,14 @@ function draw(scale=1){
       rad.addColorStop(0,col); rad.addColorStop(1,"rgba(0,0,0,0)");
       ctx.globalAlpha=.55; ctx.fillStyle=rad; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
     });
+  } else if(S.bgstyle==="image"){
+    ctx.fillStyle=p.b; ctx.fillRect(0,0,W,H);
+    if(S.bgimg){
+      const iw=S.bgimg.naturalWidth, ih=S.bgimg.naturalHeight, r=Math.max(W/iw,H/ih), dw=iw*r, dh=ih*r;
+      ctx.drawImage(S.bgimg,(W-dw)/2,(H-dh)/2,dw,dh);
+    } else {
+      const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,p.a); g.addColorStop(1,p.b); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
   } else if(S.bgstyle==="dots"){
     const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,p.a); g.addColorStop(1,p.b);
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
