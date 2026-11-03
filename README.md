@@ -41,3 +41,7 @@ app-store screenshot tool (appshot). Cross-link all three; bundle the Pro packs 
 ## Distribution asks (handed to distributor)
 - Gumroad listing copy + cover for the Pro pack.
 - One honest Show-HN / r/webdev / r/SideProject post when there are ≥2 tools to point at.
+
+## Guide
+
+[OG image size and tags: why your link preview has no image](https://arnavjhajharia.github.io/ogkit/og-image-size/): 1200x630, the exact meta tags, and how to refresh cached previews.
