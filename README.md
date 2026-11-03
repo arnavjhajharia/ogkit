@@ -12,7 +12,7 @@ No sign-up, no server, nothing uploaded (text + logo stay local). Single `index.
 - 10 palettes (dark + light), auto text contrast.
 - Film-grain overlay (0–80%) — the differentiator vs plain free gradient tools.
 - Font choice (Inter / Fraunces / JetBrains Mono), title-size slider, logo/avatar upload.
-- Export: **PNG 1200×630**, **@2x retina 2400×1260**, **Twitter 1600×900**.
+- Export: **PNG 1200×630**, **@2x retina 2400×1260**, **Twitter 1600×900** (scaled uniformly, no stretched text), and a **JPG under 300 KB** for WhatsApp and other apps that skip heavy preview images.
 - One-click copy of the `<meta og:* / twitter:*>` tags snippet (devs love this).
 
 ## Verified
