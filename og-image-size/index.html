@@ -23,6 +23,14 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <p class="lead">Use a <b>1200 × 630</b> PNG or JPEG, reference it with a <b>full https:// URL</b>, add <b>twitter:card = summary_large_image</b>, and re-scrape after every change.</p>
 <h2 id="og-image-size">Rule 1: size 1200 × 630</h2>
 <p>1200 × 630 (a 1.91:1 ratio) is the size Facebook recommends and the one X, LinkedIn, Slack and Discord all display well. Export at 2× (2400 × 1260) if you want it sharp on retina screens, but keep the file small. Keep the title big and centred: some apps crop to a square or show a small thumbnail.</p>
+<h2 id="facebook-og-image-size">Facebook share image size (2026)</h2>
+<p>Facebook’s link preview still expects a <b>1200 × 630</b> PNG or JPEG at a public <code>https://</code> URL. Use raster only (not SVG). Stay under ~8&nbsp;MB; aim for &lt;300&nbsp;KB so mobile scrapes finish quickly. After you change the file, open the <a href="https://developers.facebook.com/tools/debug/">Sharing Debugger</a>, paste your page URL, and click <b>Scrape Again</b> — otherwise feeds keep showing the old image for days.</p>
+<h2 id="og-image-warnings">Fixing “og:image” warnings in the Sharing Debugger</h2>
+<p>Warnings usually mean: image smaller than ~600×315 (use 1200×630), a relative <code>og:image</code> path, a 404 or auth wall on the image URL, or a stale cache. Add explicit dimensions so the crawler knows the aspect ratio:</p>
+<pre>&lt;meta property="og:image" content="https://example.com/share.png"&gt;
+&lt;meta property="og:image:width" content="1200"&gt;
+&lt;meta property="og:image:height" content="630"&gt;</pre>
+<p>Re-scrape after every deploy. If the warning persists, curl the image URL from another network — if you can’t fetch it, neither can Facebook.</p>
 <h2>Rule 2: a full https:// URL</h2>
 <pre>&lt;meta property="og:image" content="https://example.com/og.png"&gt;
 &lt;meta property="og:image:width" content="1200"&gt;
