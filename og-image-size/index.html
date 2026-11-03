@@ -51,6 +51,27 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <li><b>Cache</b> — WhatsApp caches hard. Bump <code>?v=2</code> on the image URL after edits; there is no public “scrape again” debugger like Facebook’s.</li>
 </ol>
 <p>Same meta block that fixes Facebook/X usually fixes WhatsApp once the image is reachable.</p>
+
+<h2 id="twitter-card-summary-vs-large">Twitter card: summary vs summary_large_image</h2>
+<p><code>summary</code> shows a small square thumbnail beside the text. <code>summary_large_image</code> shows a wide hero image (your 1200×630). For launches, docs and marketing pages, use:</p>
+<pre>&lt;meta name="twitter:card" content="summary_large_image"&gt;</pre>
+<p>X still reads <code>og:title</code> / <code>og:description</code> / <code>og:image</code> when separate <code>twitter:</code> tags are missing — but without an explicit card type you often get the small summary layout.</p>
+<h2 id="twitter-card-cache-purge">How to force a Twitter / X card cache refresh</h2>
+<p>X caches card markup aggressively. After you change tags or the image:</p>
+<ol>
+<li>Bump the image URL (<code>?v=2</code>) so the crawler sees a new resource.</li>
+<li>Open the page once in a private window to confirm the live HTML has the new tags.</li>
+<li>Use X’s Card Validator / re-paste the URL in a composer draft (tools change names; LinkedIn Post Inspector + Facebook Debugger still help for OG parity).</li>
+<li>Wait — some caches take minutes to hours even after a successful scrape.</li>
+</ol>
+<p>If the validator says “no card found”, fix tags first (absolute <code>og:image</code>, reachable HTTPS, <code>twitter:card</code>), then purge.</p>
+<h2 id="facebook-share-preview-image">How Facebook picks the share preview image</h2>
+<p>When someone pastes your URL, Facebook’s crawler prefers, in practice:</p>
+<ol>
+<li>An explicit <code>og:image</code> (absolute <code>https://</code>, raster PNG/JPEG).</li>
+<li>Otherwise a large enough image embedded in the page HTML.</li>
+</ol>
+<p>Relative paths, HTTP→HTTPS mismatches, login walls, and SVG files commonly produce “no image” or stale previews. Set width/height meta, keep the file public, and use the Sharing Debugger’s <b>Scrape Again</b> after every change. Same absolute <code>og:image</code> also drives LinkedIn, Slack, Discord and WhatsApp.</p>
 <h2>The full tag set to copy</h2>
 <pre>&lt;meta property="og:type" content="website"&gt;
 &lt;meta property="og:title" content="Your title"&gt;
