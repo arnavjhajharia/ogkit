@@ -72,6 +72,17 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <li>Otherwise a large enough image embedded in the page HTML.</li>
 </ol>
 <p>Relative paths, HTTP→HTTPS mismatches, login walls, and SVG files commonly produce “no image” or stale previews. Set width/height meta, keep the file public, and use the Sharing Debugger’s <b>Scrape Again</b> after every change. Same absolute <code>og:image</code> also drives LinkedIn, Slack, Discord and WhatsApp.</p>
+
+<h2 id="linkedin-og-image">LinkedIn link preview / og:image size</h2>
+<p>LinkedIn’s crawler reads the same Open Graph tags as Facebook. In 2026 the reliable recipe is still:</p>
+<ul>
+<li><b>1200 × 630</b> px (≈1.91:1) PNG or JPEG — the size LinkedIn’s docs still cite for share images.</li>
+<li>Absolute <code>https://</code> URL in <code>og:image</code> (relative paths and HTTP redirects often yield a blank card).</li>
+<li>Optional but helpful: <code>og:image:width</code> / <code>og:image:height</code> matching the file.</li>
+<li>Public file: no login wall, no <code>robots</code> block on the image URL.</li>
+</ul>
+<p>After you change the image, open <a href="https://www.linkedin.com/post-inspector/">LinkedIn Post Inspector</a>, paste the page URL, and re-inspect. LinkedIn caches aggressively; changing only pixels at the same URL may not refresh — bump a query string (<code>?v=2</code>) or rename the file.</p>
+<p>Common failures: SVG/WebP as the only <code>og:image</code>, image larger than a few MB, or a preview that still shows an old logo because the Inspector was never re-run. The same 1200×630 asset works for Facebook, X (with <code>twitter:card=summary_large_image</code>), Slack and Discord.</p>
 <h2>The full tag set to copy</h2>
 <pre>&lt;meta property="og:type" content="website"&gt;
 &lt;meta property="og:title" content="Your title"&gt;
@@ -83,6 +94,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <div class="box"><b>Optional OG presets + backgrounds:</b> <a href="https://bharatankh.gumroad.com/l/ogkit-pro">ogkit Pro</a> — 24 layouts at 1200×630 ($12) · <a href="https://bharatankh.gumroad.com/l/meshgrain">MESHGRAIN</a> ($6).</div>
 <h2>FAQ</h2><h3>What is the best OG image size?</h3><p>1200 x 630 pixels (1.91:1). It displays well on Facebook, X, LinkedIn, Slack and Discord.</p><h3>Why does my link preview show no image?</h3><p>The most common causes are a relative og:image URL, an image the crawler can&#x27;t fetch, or an old cached preview. Use a full https:// URL and re-scrape with LinkedIn Post Inspector or the Facebook Sharing Debugger.</p><h3>How do I get a large image card on X (Twitter)?</h3><p>Add &lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt; alongside your og:image tag.</p><h3>Do I need separate twitter:image tags?</h3><p>No. X falls back to the Open Graph tags (og:title, og:description, og:image) when twitter: tags are missing.</p>
 <h3>Why does WhatsApp show no thumbnail for my link?</h3><p>Use an absolute https:// og:image URL (JPEG/PNG, preferably under ~300&nbsp;KB), make sure the image is publicly fetchable, and bump <code>?v=2</code> after changes — WhatsApp caches previews aggressively and has no public debugger.</p>
+<h3>What size should a LinkedIn share image be?</h3><p>Use <b>1200 × 630</b> (1.91:1) JPEG/PNG with an absolute https <code>og:image</code>, then re-check with <a href="https://www.linkedin.com/post-inspector/">LinkedIn Post Inspector</a>. Details: <a href="#linkedin-og-image">LinkedIn og:image</a>.</p>
 <p style="font-size:15px;color:var(--muted);margin:32px 0 0">Related guides: <a href="https://arnavjhajharia.github.io/appshot/screenshot-sizes/#6-5-inch-display">App Store screenshot sizes (6.5&quot; / 2026)</a> ·
 <a href="https://arnavjhajharia.github.io/favikit/favicon-sizes/#force-favicon-refresh">Favicon not updating (cache bust)</a> ·
 <a href="https://arnavjhajharia.github.io/shipcopy/whats-new-from-changelog/">What&apos;s New from a changelog</a></p>
