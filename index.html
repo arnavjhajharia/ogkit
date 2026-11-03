@@ -190,12 +190,19 @@ ship("ogkit"); // live in 90s</textarea>
     <div class="foot">
       <div class="pro">
         <strong>ogkit Pro template pack</strong> — 24 extra layouts, premium font pairings, and 40 grain-textured
-        palettes, as a one-time download. <a href="#" id="prolink">Get it on Gumroad →</a>
-        <span style="opacity:.7">(link added at launch)</span>
+        palettes, as a one-time download. <a href="https://bharatankh.gumroad.com" id="prolink" target="_blank" rel="noopener">Coming soon on Gumroad →</a>
       </div>
       100% client-side. Your text and logo never leave the browser — there is no server. Part of the indie ship kit:
       <a href="https://arnavjhajharia.github.io/favikit/" target="_blank" rel="noopener">favikit</a> (favicons).
       Built with a plain &lt;canvas&gt;, no tracking.
+    </div>
+    <div style="max-width:900px;margin:40px auto 24px;padding-top:18px;border-top:1px solid rgba(140,140,160,.25);text-align:center;font:14px/1.6 system-ui,sans-serif;color:#9a9ab0">
+      <div style="font-weight:700;color:#c3c3d6;margin-bottom:4px">More free tools in The Ship Kit</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin-bottom:10px">
+        <a href="https://arnavjhajharia.github.io/favikit/" style="color:#7c5cff;text-decoration:none">Favikit — favicons &amp; app icons</a>
+        <a href="https://arnavjhajharia.github.io/appshot/" style="color:#7c5cff;text-decoration:none">AppShot — app-store screenshots</a>
+      </div>
+      <div><a href="https://bharatankh.gumroad.com/l/meshgrain" style="color:#19d3c5;text-decoration:none;font-weight:600">★ 100 mesh-gradient backgrounds + 8 grain overlays →</a></div>
     </div>
   </section>
 </main>
@@ -461,7 +468,6 @@ $("dlpng").onclick=()=>download(1,"1200x630");
 $("dl2x").onclick=()=>download(2,"2400x1260@2x");
 $("dltw").onclick=()=>download(1,"twitter-1600x900",1600,900);
 $("copymeta").onclick=()=>{navigator.clipboard.writeText($("metasnippet").textContent);$("copymeta").textContent="Copied ✓";setTimeout(()=>$("copymeta").textContent="Copy meta tags",1400);};
-$("prolink").onclick=e=>{e.preventDefault();alert("Gumroad Pro pack link goes here at launch.");};
 
 // render once fonts are ready
 function boot(){ updateMeta(); draw(1); }
