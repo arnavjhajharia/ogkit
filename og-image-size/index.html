@@ -51,6 +51,8 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin
 <li><b>Cache</b> — WhatsApp caches hard. Bump <code>?v=2</code> on the image URL after edits; there is no public “scrape again” debugger like Facebook’s.</li>
 </ol>
 <p>Same meta block that fixes Facebook/X usually fixes WhatsApp once the image is reachable.</p>
+<p><b>Android vs iOS:</b> Android WhatsApp often drops the thumbnail when iOS still shows it. Prefer JPEG over WebP, keep the file under ~300&nbsp;KB, and confirm the image URL returns an image (not an HTML challenge page) on a mobile network. After fixing, bump <code>?v=</code> and re-share from a new chat — Android caches aggressively.</p>
+<p><i>Updated 2026-11-03.</i></p>
 
 <h2 id="twitter-card-summary-vs-large">Twitter card: summary vs summary_large_image</h2>
 <p><code>summary</code> shows a small square thumbnail beside the text. <code>summary_large_image</code> shows a wide hero image (your 1200×630). For launches, docs and marketing pages, use:</p>
