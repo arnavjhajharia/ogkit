@@ -11,7 +11,7 @@ Your page looks fine in the browser. Paste the URL in Slack and you get title + 
 
 Open Graph expects **1200 × 630** (1.91:1). Tall phone screenshots get cropped oddly or dropped. Twitter/X often uses **`twitter:card` = summary_large_image** with the same asset or **1600 × 900**.
 
-Reference: [OG image size & meta tags](https://arnavjhajharia.github.io/ogkit/og-image-size/#twitter-card) (1200×630 + `summary_large_image`).
+Reference: [OG image size & meta tags](https://arnavjhajharia.github.io/ogkit/og-image-size/#twitter-card) (1200×630 + `summary_large_image`). Facebook-specific: [#facebook-og-image-size](https://arnavjhajharia.github.io/ogkit/og-image-size/#facebook-og-image-size). Debugger warnings: [#og-image-warnings](https://arnavjhajharia.github.io/ogkit/og-image-size/#og-image-warnings).
 
 ## 2. Relative URL in `og:image`
 
@@ -23,7 +23,7 @@ Hotlink protection, auth walls, or 5xx on the image URL → no preview. Test the
 
 ## 4. Stale cache
 
-Facebook, LinkedIn, and Slack cache previews. After you fix tags, use each platform's debugger / "refresh scrape" tool (where available) or change the image filename.
+Facebook, LinkedIn, and Slack cache previews. After you fix tags, use each platform's debugger / "refresh scrape" tool (where available) or change the image filename. WhatsApp has no public debugger — see [#whatsapp-link-preview](https://arnavjhajharia.github.io/ogkit/og-image-size/#whatsapp-link-preview).
 
 ## 5. `og:image` points at HTML
 
